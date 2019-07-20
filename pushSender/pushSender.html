@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HTMLファイルからFirebaseにPushを送信する</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+    const SERVER_KEY = "YOUR_SERVER_KEY";
+    $(function(){
+        $("#response").html("Response Values");
+
+        $("#button").click( function(){
+            var message = {
+              notification: {
+                title: $("#title").val(),
+                body: $("#body").val()
+              },
+              to: $("#token").val()
+            };
+            alert(JSON.stringify(message));
+            $.ajax({
+                type : 'post',
+                url : "https://fcm.googleapis.com/fcm/send",
+                data : JSON.stringify(message),
+                contentType: 'application/JSON',
+                headers : {
+                  authorization: "key=" + SERVER_KEY
+                },
+                dataType : 'JSON',
+                scriptCharset: 'utf-8',
+                success : function(data) {
+                    // Success
+                    alert("success");
+                    alert(JSON.stringify(data));
+                    $("#response").html(JSON.stringify(data));
+                },
+                error : function(data) {
+
+                    // Error
+                    alert("error");
+                    alert(JSON.stringify(data));
+                    $("#response").html(JSON.stringify(data));
+                }
+            });
+        })
+    })
+</script>
+
+</head>
+<body>
+    <h1>HTMLファイルからFirebaseにPushを送信する</h1>
+    <p>Token: <input type="text" id="token" size="30" value="DeviceTokenToSend"></p>
+    <p>Title: <input type="text" id="title" size="30" value="TitleSample"></p>
+    <p>Body: <input type="text" id="body" size="30" value="BodySample"></p>
+    <p><button id="button" type="button">送信</button></p>
+    <textarea id="response" cols=120 rows=10 disabled></textarea>
+</body>
+</html>
