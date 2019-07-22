@@ -1,1 +1,4 @@
 # PushReceiveTest
+
+htmlからpushを送り
+firebaseでpushを受け取るテストサンプルです。
